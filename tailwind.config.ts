@@ -7,6 +7,7 @@ export default {
       'sans': 'Helvetica, Arial, sans-serif',
     },
     extend: {},
+
   },
   plugins: [],
 } //satisfies Config;
