@@ -1,10 +1,13 @@
+import { NextPage } from "next";
 import Link from "next/link";
 
-const DressUp = () => {
+interface Props {}
+
+const Dressup: NextPage = ({}) => {
   return (
     <div className="flex w-full h-max bg-blue-700 p-4 min-h-screen">
       BLANK
     </div>
   );
 };
-export default DressUp;
+export default Dressup;
