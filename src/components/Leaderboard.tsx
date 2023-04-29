@@ -39,7 +39,7 @@ const Leaderboard: React.FC<Props> = ({ }) => {
     return (
         <div className="flex w-full content-center justify-center">
             <div className="flex w-9/12 flex-col content-center justify-start space-y-2">
-                {leaders.map((grade, index) => (
+                {sorted.map((grade, index) => (
                     <Rank rank={index + 1} grade={grade} key={grade.grade}></Rank>
                 ))}
             </div>
