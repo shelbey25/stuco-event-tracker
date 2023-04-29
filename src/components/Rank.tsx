@@ -5,17 +5,17 @@ import { GradeInfo } from "./Leaderboard";
 
 interface Props {
     grade: GradeInfo;
+    rank: number;
 }
 
-
-const Rank: React.FC<Props> = ({ grade }) => {
-  return (
-    <div className="flex flex-row w-full rounded-lg align-center bg-blue-100 justify-between p-5 border-8 border-white">
-      <h1>{grade.rank}.</h1>
-      <h1>{grade.grade}</h1>
-      <h1>{grade.points}</h1>
-    </div>
-  );
+const Rank: React.FC<Props> = ({ rank, grade }) => {
+    return (
+        <div className="align-center flex w-full flex-row justify-between rounded-lg border-8 border-white bg-blue-100 p-5">
+            <h1>{rank}.</h1>
+            <h1>{grade.grade}</h1>
+            <h1>{grade.points}</h1>
+        </div>
+    );
 };
 
 export default Rank;
