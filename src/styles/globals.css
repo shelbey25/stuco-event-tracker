@@ -6,4 +6,7 @@
     .heading-primary {
       @apply align-middle text-center text-3xl font-bold;
     }
+    .heading-sub {
+      @apply align-middle text-center text-xl font-bold;
+    }
   }
