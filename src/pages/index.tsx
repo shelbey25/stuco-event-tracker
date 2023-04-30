@@ -7,7 +7,6 @@ import { api } from "~/utils/api";
 import Leaderboard from "~/components/Leaderboard";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
     <div className="flex flex-col p-8 items-center justify-center w-screen h-screen bg-slate-300">

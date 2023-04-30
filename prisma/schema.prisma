@@ -11,11 +11,10 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Event {
+model Rankings {
     id Int @id @default(autoincrement())
-    type      String
-    name      String
-    complete  Boolean
+    grade      String
+    points      String
 }
 
 model Participant {
@@ -26,11 +25,20 @@ model Participant {
     dressed Boolean
 }
 
-model EventInformation {
+model EventInformationDressUp {
+    id Int @id @default(autoincrement())
+    name           String
+    displayName    String
+    complete       Boolean
+    data           Participant[]
+    points         Int[]
+}
+
+model EventInformationStandard {
     id Int @id @default(autoincrement())
     type           String
     name           String
     displayName    String
     complete       Boolean
-    data           Participant[]
+    rank           String[]
 }
