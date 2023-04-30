@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const rankingsRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.rankings.findMany({orderBy: [{ points: "desc" }],});
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return (await ctx.prisma.rankings.findMany()).sort((a, b) => b.points - a.points);
   }),
 });

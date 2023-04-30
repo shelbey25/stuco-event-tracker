@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import dressUpData from '~/assets/data/dressupData'
 import { Icon } from '@iconify/react'
 
 const Tracker = () => {

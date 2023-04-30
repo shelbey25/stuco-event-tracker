@@ -13,33 +13,9 @@ export interface GradeInfo {
 interface Props { }
 
 const Leaderboard: React.FC<Props> = ({ }) => {
-    /*const [leaders, setLeaders] = useState([
-        {
-            grade: "Sophmores",
-            points: 1902,
-        },
-        {
-            grade: "Seniors",
-            points: 1901,
-        },
-        {
-            grade: "Freshmen",
-            points: 103,
-        },
-        {
-            grade: "Juniors",
-            points: 1900,
-        },
-    ]);
-
-    const sorted = useMemo(
-        () => leaders.sort((a, b) => b.points - a.points),
-        [leaders]
-    );*/
-
     const { data } = api.rankings.getAll.useQuery();
-    if (!data) return <div>404</div>;
-
+    if (!data) return null;
+    console.log(data)
     return (
         <div className="flex w-full content-center justify-center">
             <div className="flex w-9/12 flex-col content-center justify-start space-y-2">
