@@ -44,7 +44,7 @@ const Tracker = () => {
             </div>
             <div className="flex h-full items-start w-1/2 p-2 flex">
                 <div className='border-2 border-white flex flex-col items-start w-full'>
-                    {singleEvent.data.map((participant, index) => (
+                    {singleEvent.participants.map((participant, index) => (
                     <div className="flex w-full grid-cols-3" key={index}>
                         <div className="border-2 w-full border-r-2 border-white bg-blue-100 p-2"><h1 className='text-center'>{participant.name}</h1></div>
                         <div className="border-2 w-full border-b-2 justify-center items-center border-r-2 border-white bg-blue-100 p-2">

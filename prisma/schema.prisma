@@ -33,7 +33,7 @@ model EventInformation {
   name        String
   displayName String
   complete    Boolean
-  data        Participant[]
+  participants        Participant[]
   points9     Int
   points10    Int
   points11    Int

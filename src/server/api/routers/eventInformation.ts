@@ -8,7 +8,10 @@ export const eventInformationRouter = createTRPCRouter({
       where: {
         type: {
           endsWith: 'dress-up',
-        },    
-    }});
+        }, 
+    }, include: {
+      participants: true,
+    }
+  });
   }),
 });
