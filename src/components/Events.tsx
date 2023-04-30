@@ -3,9 +3,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Event from "./Event";
 import { EventStructure } from "~/pages/dressup";
+import { EventInformation, Participant } from "@prisma/client";
 
 interface Props {
-    events: EventStructure[]
+    events: (EventInformation & {
+        participants: Participant[];
+    })[]
 }
 
 
