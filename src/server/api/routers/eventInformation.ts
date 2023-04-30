@@ -14,4 +14,15 @@ export const eventInformationRouter = createTRPCRouter({
       }
     })).sort((a, b) => (a.complete ? 1 : 0) - (b.complete ? 1 : 0));
   }),
+  getAllSmall: publicProcedure.query(async ({ ctx }) => {
+    return (await ctx.prisma.eventInformation.findMany({
+      where: {
+        type: {
+          endsWith: 'small',
+        },
+      }, include: {
+        participants: true,
+      }
+    })).sort((a, b) => (a.complete ? 1 : 0) - (b.complete ? 1 : 0));
+  }),
 });

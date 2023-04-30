@@ -3,37 +3,15 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import Events from "../components/Events";
+import { api } from "~/utils/api";
 
 interface Props {}
 
 
 const Small: NextPage = ({}) => {
-    const [events, setEvents] = useState([
-        {
-            name: "Ping Pong",
-            complete: false
-        },
-        {
-            name: "Retro",
-            complete: false
-        },
-        {
-            name: "Sports",
-            complete: true
-        },
-        {
-            name: "Beach",
-            complete: true
-        },
-        {
-            name: "White Lie",
-            complete: false
-        },
-    ]);
-    const sorted = useMemo(
-      () => events.sort((a, b) => (a.complete ? 1 : 0) - (b.complete ? 1 : 0)),
-      [events]
-  );
+    const { data } = api.eventInformation.getAllSmall.useQuery();
+    if (!data) return null; 
+
   return (
     <div className="flex flex-col p-8 items-center justify-start w-screen h-screen bg-slate-300">
         <div className="flex h-[14] justify-between w-full p-2">
@@ -44,7 +22,7 @@ const Small: NextPage = ({}) => {
             </div>
         </div>
         <div className="flex h-full w-full p-2">
-            <Events events={sorted}/>
+            <Events events={data}/>
         </div>
     </div>
   );
