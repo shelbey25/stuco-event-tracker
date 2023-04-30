@@ -11,6 +11,10 @@ const Tracker = () => {
         return null;
     }
 
+    const checkChange = () => {
+        
+      };
+
   return (
     <div>
       <div className="flex flex-col p-8 items-center justify-start w-screen h-screen bg-slate-300">
@@ -40,11 +44,25 @@ const Tracker = () => {
             </div>
             <div className="flex h-full items-start w-1/2 p-2 flex">
                 <div className='border-2 border-white flex flex-col items-start w-full'>
-                    {singleEvent.data.map((participant) => (
-                    <div className="flex w-full grid-cols-3">
+                    {singleEvent.data.map((participant, index) => (
+                    <div className="flex w-full grid-cols-3" key={index}>
                         <div className="border-2 w-full border-r-2 border-white bg-blue-100 p-2"><h1 className='text-center'>{participant.name}</h1></div>
-                        <div className="border-2 w-full border-b-2 justify-center border-r-2 border-white bg-blue-100 p-2"><h1 className='text-center'>{participant.name}</h1></div>
-                        <div className="border-2 w-full border-l-2 justify-center border-white bg-blue-100 p-2"><h1 className='text-center'>{participant.name}</h1></div>
+                        <div className="border-2 w-full border-b-2 justify-center items-center border-r-2 border-white bg-blue-100 p-2">
+                            <div className='flex justify-center'>
+                            <button
+                            className="flex cursor-pointer justify-center hover:drop-shadow-lg hover:shadow-black"
+                            onClick={checkChange}
+                            >
+                            <input
+                                type="checkbox"
+                                className="w-7 h-7 cursor-pointer rounded-xl"
+                            ></input>
+                            </button>
+                            </div>
+                        </div>
+                        <div className="border-2 w-full border-l-2 justify-center border-white bg-blue-100 p-2">
+                            <h1 className='text-center'>{participant.name}</h1>
+                        </div>
                     </div>
                     ))}
                 </div>
