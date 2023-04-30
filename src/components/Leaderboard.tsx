@@ -15,7 +15,7 @@ interface Props { }
 const Leaderboard: React.FC<Props> = ({ }) => {
     const { data } = api.rankings.getAll.useQuery();
     if (!data) return null;
-    console.log(data)
+
     return (
         <div className="flex w-full content-center justify-center">
             <div className="flex w-9/12 flex-col content-center justify-start space-y-2">

@@ -1,14 +1,15 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
+import { api } from '~/utils/api'
 
 const Tracker = () => {
   const router = useRouter()
   const name = router.query.name as string
-  const singleEvent = dressUpData.find((item) => item.name === name);
-    if (!singleEvent) {
-        return null;
-    }
+  const { data } = api.eventInformation.getAllDressUp.useQuery();
+    if (!data) return null;
+  const singleEvent = data.find((item) => item.name === name);
+  if (!singleEvent) return <div className="align-center text-center">This Event Doesn't Exist</div>;
 
     const checkChange = () => {
         
