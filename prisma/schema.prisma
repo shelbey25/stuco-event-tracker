@@ -6,39 +6,47 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Rankings {
-    id Int @id @default(autoincrement())
-    grade      String
-    points      String
+  id     Int    @id @default(autoincrement())
+  grade  String
+  points String
 }
 
 model Participant {
-    id Int @id @default(autoincrement())
-    grade   Int
-    name    String
-    seen    Boolean
-    dressed Boolean
+  id                        Int                      @id @default(autoincrement())
+  grade                     Int
+  name                      String
+  seen                      Boolean
+  dressed                   Boolean
+  EventInformationDressUp   EventInformationDressUp? @relation(fields: [eventInformationDressUpId], references: [id])
+  eventInformationDressUpId Int?
 }
 
 model EventInformationDressUp {
-    id Int @id @default(autoincrement())
-    name           String
-    displayName    String
-    complete       Boolean
-    data           Participant[]
-    points         Int[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  displayName String
+  complete    Boolean
+  data        Participant[]
+  points9     Int
+  points10    Int
+  points11    Int
+  points12    Int
 }
 
 model EventInformationStandard {
-    id Int @id @default(autoincrement())
-    type           String
-    name           String
-    displayName    String
-    complete       Boolean
-    rank           String[]
+  id          Int     @id @default(autoincrement())
+  type        String
+  name        String
+  displayName String
+  complete    Boolean
+  points9     Int
+  points10    Int
+  points11    Int
+  points12    Int
 }
