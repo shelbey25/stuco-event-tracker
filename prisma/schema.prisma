@@ -18,33 +18,22 @@ model Rankings {
 }
 
 model Participant {
-  id                        Int                      @id @default(autoincrement())
-  grade                     Int
-  name                      String
-  seen                      Boolean
-  dressed                   Boolean
-  EventInformationDressUp   EventInformationDressUp? @relation(fields: [eventInformationDressUpId], references: [id])
-  eventInformationDressUpId Int?
+  id                 Int               @id @default(autoincrement())
+  grade              Int
+  name               String
+  seen               Boolean
+  dressed            Boolean
+  EventInformation   EventInformation? @relation(fields: [eventInformationId], references: [id])
+  eventInformationId Int?
 }
 
-model EventInformationDressUp {
+model EventInformation {
   id          Int           @id @default(autoincrement())
-  name        String
-  displayName String
-  complete    Boolean
-  data        Participant[]
-  points9     Int
-  points10    Int
-  points11    Int
-  points12    Int
-}
-
-model EventInformationStandard {
-  id          Int     @id @default(autoincrement())
   type        String
   name        String
   displayName String
   complete    Boolean
+  data        Participant[]
   points9     Int
   points10    Int
   points11    Int
