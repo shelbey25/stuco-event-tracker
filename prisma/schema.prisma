@@ -14,7 +14,7 @@ datasource db {
 model Rankings {
   id     Int    @id @default(autoincrement())
   grade  String
-  points String
+  points Int
 }
 
 model Participant {

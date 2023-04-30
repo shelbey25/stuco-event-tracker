@@ -4,6 +4,6 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const rankingsRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.rankings.findMany();
+    return ctx.prisma.rankings.findMany({orderBy: [{ points: "desc" }],});
   }),
 });
