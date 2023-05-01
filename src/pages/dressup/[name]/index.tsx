@@ -12,8 +12,14 @@ const Tracker = () => {
   if (!singleEvent) return <div className="align-center text-center">This Event Doesn't Exist</div>;
 
     const checkChange = () => {
-        
-      };
+        //use mutation for seen
+
+    };
+
+    const checkChangev2 = () => {
+        //use mutation for dressed
+
+    };
 
   return (
     <div>
@@ -44,7 +50,7 @@ const Tracker = () => {
             </div>
             <div className="flex h-full items-start w-1/2 p-2 flex">
                 <div className='border-2 border-white flex flex-col items-start w-full'>
-                    {singleEvent.participants.map((participant, index) => (
+                    {singleEvent.participants.sort((a, b) => (a.seen ? 1 : 0) - (b.seen ? 1 : 0)).map((participant, index) => (
                     <div className="flex w-full grid-cols-3" key={index}>
                         <div className="border-2 w-full border-r-2 border-white bg-blue-100 p-2"><h1 className='text-center'>{participant.name}</h1></div>
                         <div className="border-2 w-full border-b-2 justify-center items-center border-r-2 border-white bg-blue-100 p-2">
@@ -56,12 +62,24 @@ const Tracker = () => {
                             <input
                                 type="checkbox"
                                 className="w-7 h-7 cursor-pointer rounded-xl"
+                                defaultChecked={participant.seen}
                             ></input>
                             </button>
                             </div>
                         </div>
                         <div className="border-2 w-full border-l-2 justify-center border-white bg-blue-100 p-2">
-                            <h1 className='text-center'>{participant.name}</h1>
+                        <div className='flex justify-center'>
+                            <button
+                            className="flex cursor-pointer justify-center hover:drop-shadow-lg hover:shadow-black"
+                            onClick={checkChangev2}
+                            >
+                            <input
+                                type="checkbox"
+                                className="w-7 h-7 cursor-pointer rounded-xl"
+                                defaultChecked={participant.dressed}
+                            ></input>
+                            </button>
+                            </div>
                         </div>
                     </div>
                     ))}
@@ -73,3 +91,4 @@ const Tracker = () => {
   )
 }
 export default Tracker;
+

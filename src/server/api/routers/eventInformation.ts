@@ -25,4 +25,15 @@ export const eventInformationRouter = createTRPCRouter({
       }
     })).sort((a, b) => (a.complete ? 1 : 0) - (b.complete ? 1 : 0));
   }),
+  updateSeen: publicProcedure.input(
+    z.object({
+      result: z.boolean(),
+    })
+  ).mutation((opts) => {
+    return {
+      eventInformation: {
+        seen: opts.input.result,
+      },
+    };
+  }),
 });
