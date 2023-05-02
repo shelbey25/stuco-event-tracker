@@ -10,13 +10,12 @@ export const participantRouter = createTRPCRouter({
         })
       ).mutation(async ({ ctx, input }) => {
         const { seen, id } = input;
-        const modEventInDb = await ctx.prisma.participant.update({
+        return ctx.prisma.participant.update({
           where: { id: id },
           data: {
             seen: seen,
           },
         });
-        return { success: true, modEvent: modEventInDb };
       },
       ),
 });

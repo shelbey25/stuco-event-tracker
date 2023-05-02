@@ -6,17 +6,20 @@ import { api } from '~/utils/api'
 const Tracker = () => {
   const router = useRouter()
   const name = router.query.name as string
+  const seenMutation = api.participant.updateSeen.useMutation({
+    onSuccess: () => {
+    },
+  })
   const { data } = api.eventInformation.getAllDressUp.useQuery();
     if (!data) return null;
   const singleEvent = data.find((item) => item.name === name);
   if (!singleEvent) return <div className="align-center text-center">This Event Doesn't Exist</div>;
 
-    const checkChange = (seen: boolean, id: number) => {
-        //use mutation for seen
-        api.participant.updateSeen.useMutation({
-            id, seen,
+    const checkChange = async (seen: boolean, id: number) => {
+        return seenMutation.mutate({
+            id: id,
+            seen: seen
           });
-          return undefined;
     };
 
     const checkChangev2 = () => {
@@ -60,7 +63,7 @@ const Tracker = () => {
                             <div className='flex justify-center'>
                             <button
                             className="flex cursor-pointer justify-center hover:drop-shadow-lg hover:shadow-black"
-                            onClick={checkChange((!participant.seen), participant.id)}
+                            onClick={() => checkChange((!participant.seen), participant.id)}
                             >
                             <input
                                 type="checkbox"
