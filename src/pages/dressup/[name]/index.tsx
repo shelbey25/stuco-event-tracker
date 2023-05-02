@@ -11,9 +11,12 @@ const Tracker = () => {
   const singleEvent = data.find((item) => item.name === name);
   if (!singleEvent) return <div className="align-center text-center">This Event Doesn't Exist</div>;
 
-    const checkChange = () => {
+    const checkChange = (seen: boolean, id: number) => {
         //use mutation for seen
-        
+        api.participant.updateSeen.useMutation({
+            id, seen,
+          });
+          return undefined;
     };
 
     const checkChangev2 = () => {
@@ -57,7 +60,7 @@ const Tracker = () => {
                             <div className='flex justify-center'>
                             <button
                             className="flex cursor-pointer justify-center hover:drop-shadow-lg hover:shadow-black"
-                            onClick={checkChange}
+                            onClick={checkChange((!participant.seen), participant.id)}
                             >
                             <input
                                 type="checkbox"
