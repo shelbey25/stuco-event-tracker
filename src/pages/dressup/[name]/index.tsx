@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { api } from '~/utils/api'
+import { useState } from 'react'
 
 const Tracker = () => {
   const router = useRouter()
@@ -33,6 +34,13 @@ const Tracker = () => {
           });
     };
 
+    const [form, setForm] = useState("ALL")
+    const [search, setSearch] = useState("")
+
+    const filterParticipants = (gradeLevel: string) => {
+        setForm(gradeLevel);
+    }
+
   return (
     <div>
       <div className="flex flex-col p-8 items-center justify-start w-screen h-screen bg-slate-300">
@@ -46,8 +54,8 @@ const Tracker = () => {
         <div className="flex h-full items-center w-full p-2 flex-col">
             <div className="flex gap-x-2 h-14 w-3/4">
                 <div className='w-14'></div>
-                <input className="flex h-8 p-2 rounded-sm text-center w-full" type="text" id="name" name="name"></input>
-                <select className="flex h-8 w-14 rounded-sm" name="grade" id="grade">
+                <input className="flex h-8 p-2 rounded-sm text-center w-full" type="text" id="name" name="name" onChange={(e) => setSearch(e.target.value)}></input>
+                <select className="flex h-8 w-14 rounded-sm" name="grade" id="grade" onChange={(e) => filterParticipants(e.target.value)}>
                     <option value="ALL">ALL</option>
                     <option value="9th">9th</option>
                     <option value="10th">10th</option>
@@ -62,7 +70,7 @@ const Tracker = () => {
             </div>
             <div className="flex h-full items-start w-1/2 p-2 flex">
                 <div className='border-2 border-white flex flex-col items-start w-full'>
-                    {singleEvent.participants.sort((a, b) => (a.seen ? 1 : 0) - (b.seen ? 1 : 0)).map((participant, index) => (
+                    {singleEvent.participants.sort((a, b) => (a.seen ? 1 : 0) - (b.seen ? 1 : 0)).map((participant, index) => (((form == "ALL" || participant.grade.toString() + "th" == form) && participant.name.toLowerCase().indexOf(search.toLowerCase()) != -1) ?
                     <div className="flex w-full grid-cols-3" key={index}>
                         <div className="border-2 w-full border-r-2 border-white bg-blue-100 p-2"><h1 className='text-center'>{participant.name}</h1></div>
                         <div className="border-2 w-full border-b-2 justify-center items-center border-r-2 border-white bg-blue-100 p-2">
@@ -94,6 +102,8 @@ const Tracker = () => {
                             </div>
                         </div>
                     </div>
+                    :
+                    null
                     ))}
                 </div>
             </div>
