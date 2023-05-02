@@ -15,31 +15,32 @@ const Tracker = () => {
     onSuccess: () => {
     },
   })
+  const checkChange = async (seen: boolean, id: number) => {
+    return seenMutation.mutate({
+        id: id,
+        seen: seen
+      });
+};
+
+const checkChangev2 = async (dress: boolean, id: number) => {
+    return dressMutation.mutate({
+        id: id,
+        dressed: dress
+      });
+};
+
+const [form, setForm] = useState("ALL")
+const [search, setSearch] = useState("")
+
+const filterParticipants = (gradeLevel: string) => {
+    setForm(gradeLevel);
+}
   const { data } = api.eventInformation.getAllDressUp.useQuery();
     if (!data) return null;
   const singleEvent = data.find((item) => item.name === name);
   if (!singleEvent) return <div className="align-center text-center">This Event Doesn't Exist</div>;
 
-    const checkChange = async (seen: boolean, id: number) => {
-        return seenMutation.mutate({
-            id: id,
-            seen: seen
-          });
-    };
-
-    const checkChangev2 = async (dress: boolean, id: number) => {
-        return dressMutation.mutate({
-            id: id,
-            dressed: dress
-          });
-    };
-
-    const [form, setForm] = useState("ALL")
-    const [search, setSearch] = useState("")
-
-    const filterParticipants = (gradeLevel: string) => {
-        setForm(gradeLevel);
-    }
+    
 
   return (
     <div>
