@@ -18,4 +18,19 @@ export const participantRouter = createTRPCRouter({
         });
       },
       ),
+      updateParticipated: publicProcedure.input(
+        z.object({
+          dressed: z.boolean(),
+          id: z.number()
+        })
+      ).mutation(async ({ ctx, input }) => {
+        const { dressed, id } = input;
+        return ctx.prisma.participant.update({
+          where: { id: id },
+          data: {
+            dressed: dressed,
+          },
+        });
+      },
+      ),
 });

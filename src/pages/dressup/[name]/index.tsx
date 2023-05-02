@@ -10,6 +10,10 @@ const Tracker = () => {
     onSuccess: () => {
     },
   })
+  const dressMutation = api.participant.updateParticipated.useMutation({
+    onSuccess: () => {
+    },
+  })
   const { data } = api.eventInformation.getAllDressUp.useQuery();
     if (!data) return null;
   const singleEvent = data.find((item) => item.name === name);
@@ -22,9 +26,11 @@ const Tracker = () => {
           });
     };
 
-    const checkChangev2 = () => {
-        //use mutation for dressed
-
+    const checkChangev2 = async (dress: boolean, id: number) => {
+        return dressMutation.mutate({
+            id: id,
+            dressed: dress
+          });
     };
 
   return (
@@ -77,7 +83,7 @@ const Tracker = () => {
                         <div className='flex justify-center'>
                             <button
                             className="flex cursor-pointer justify-center hover:drop-shadow-lg hover:shadow-black"
-                            onClick={checkChangev2}
+                            onClick={() => checkChangev2((!participant.dressed), participant.id)}
                             >
                             <input
                                 type="checkbox"
