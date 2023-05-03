@@ -4,6 +4,8 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
+import GoogleProvider from 'next-auth/providers/google'
+import GitHubProvider from 'next-auth/providers/github'
 import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
@@ -59,6 +61,7 @@ export const authOptions: NextAuthOptions = {
      * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
      *
      * @see https://next-auth.js.org/providers/github
+     * Add Google Provider Later
      */
   ],
 };
