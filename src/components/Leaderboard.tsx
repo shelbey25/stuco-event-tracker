@@ -14,14 +14,21 @@ export interface GradeInfo {
 interface Props { }
 
 const Leaderboard: React.FC<Props> = ({ }) => {
+    const gradeIdConvertor = [0, 10, 11, 12, 9]
     const pointsMutation = api.rankings.updatePoints.useMutation({
         onSuccess: () => {
         },
     })
+    const updateAllPoints = (data: Participant[]) => {
+        updatePointsMethod(1, data)
+        updatePointsMethod(2, data)
+        updatePointsMethod(3, data)
+        updatePointsMethod(4, data)
+    }
     const updatePointsMethod = (id: number, data: Participant[]) => {
         pointsMutation.mutate({
         id: id,
-        points: getTotalPoints(10, 1, data)
+        points: getTotalPoints((gradeIdConvertor[id] || 0), id, data)
       });
     }
     const getTotalPoints = (grade: number, id: number, data: Participant[]) => {
@@ -57,7 +64,7 @@ const Leaderboard: React.FC<Props> = ({ }) => {
 
     const { data: rankingsData } = api.rankings.getAll.useQuery();
     const { data: participantData } = api.participant.getAll.useQuery();
-    useMemo(() => { participantData ? updatePointsMethod(1, participantData) : null
+    useMemo(() => { participantData ? updateAllPoints(participantData) : null
     }, [participantData])
     if (!rankingsData || !participantData) return null;
     
