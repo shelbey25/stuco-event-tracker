@@ -4,11 +4,15 @@ export const studentDirectory = [
         grade: 10
     },
     {
-        name: "Jaden Gardiola",
+        name: "Jaden Bills",
         grade: 10
     },
     {
-        name: "Luseni Conteh",
+        name: "Lam Camp",
         grade: 9
+    },
+    {
+        name: "Bama Lork",
+        grade: 12
     }
 ]

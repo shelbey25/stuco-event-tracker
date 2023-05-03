@@ -33,4 +33,8 @@ export const participantRouter = createTRPCRouter({
         });
       },
       ),
+      getAll: publicProcedure.query(async ({ ctx }) => {
+        return (await ctx.prisma.participant.findMany({
+        }));
+      }),
 });
