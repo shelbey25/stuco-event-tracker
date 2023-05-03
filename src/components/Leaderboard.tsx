@@ -25,20 +25,41 @@ const Leaderboard: React.FC<Props> = ({ }) => {
       });
     }
     const getTotalPoints = (grade: number, id: number, data: Participant[]) => {
-        let totalPoints = 0;
-        let totalNum = 0;
+        let totalPoints: (number)[] = [];
+        let totalNum: (number)[] = [];
+        let eventIds: (number)[] = [];
         data.map((participant) => {
-        if (participant.grade === grade) {
-            if (participant.dressed) {
-                totalPoints = totalPoints+1
+        if (participant.eventInformationId != null && participant.grade === grade) {
+            if (eventIds.includes(participant.eventInformationId)) {
+                if (participant.dressed) {
+                    let validIndex = eventIds.indexOf(participant.eventInformationId)
+                    if (totalNum[validIndex] != undefined) {
+                    totalNum[validIndex] = (totalNum[validIndex] || 0)+1
+                    if (participant.dressed) {
+                        totalPoints[validIndex] = (totalPoints[validIndex] || 0)+1
+                    }
+                }
+                }
+            } else {
+                eventIds.push(participant.eventInformationId)
+                let validIndex = eventIds.indexOf(participant.eventInformationId)
+                totalNum.push(1)
+                totalPoints.push(0)
+                if (participant.dressed) {
+                    totalPoints[validIndex] = (totalPoints[validIndex] || 0)+1
+                }
             }
-            totalNum = totalNum+1
         }
         }
         )
-        console.log("tp: " + totalPoints)
-        console.log("tn: " + totalNum)
-        return Math.round(Math.round(100*totalPoints)/totalNum);
+        let total = 0
+        console.log("Got beef?")
+        eventIds.map((eventId, index) => {
+            total = total + Math.round(Math.round(100*(totalPoints[index] || 0)/(totalNum[index] || 1)))
+            console.log(total)
+        })
+        console.log("Got beef!")
+        return total;
     }
 
     const { data: rankingsData } = api.rankings.getAll.useQuery();
