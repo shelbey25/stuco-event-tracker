@@ -36,8 +36,9 @@ const Leaderboard: React.FC<Props> = ({ }) => {
         }
         }
         )
-        
-        return 100*totalPoints/totalNum;
+        console.log("tp: " + totalPoints)
+        console.log("tn: " + totalNum)
+        return Math.round(Math.round(100*totalPoints)/totalNum);
     }
 
     const { data: rankingsData } = api.rankings.getAll.useQuery();
