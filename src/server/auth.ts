@@ -49,10 +49,6 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
     /**
      * ...add more providers here.
      *
@@ -63,9 +59,9 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      * Add Google Provider Later
      */
-    GitHubProvider({
-      clientId: (process.env.GITHUB_ID || ""),
-      clientSecret: (process.env.GITHUB_SECRET || ""),
+    GoogleProvider({
+      clientId: (process.env.GOOGLE_CLIENT_ID || ""),
+      clientSecret: (process.env.GOOGLE_CLIENT_SECRET || "")
     }),
   ],
 };
