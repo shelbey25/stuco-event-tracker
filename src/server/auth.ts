@@ -63,6 +63,10 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      * Add Google Provider Later
      */
+    GitHubProvider({
+      clientId: (process.env.GITHUB_ID || ""),
+      clientSecret: (process.env.GITHUB_SECRET || ""),
+    }),
   ],
 };
 
