@@ -7,78 +7,84 @@ import { api } from "~/utils/api";
 import { Participant } from "@prisma/client";
 
 export interface GradeInfo {
-    grade: string;
-    points: number;
+  grade: string;
+  points: number;
 }
 
-interface Props { }
+interface Props {}
 
-const Leaderboard: React.FC<Props> = ({ }) => {
-    const gradeIdConvertor = [0, 10, 11, 12, 9]
-    const pointsMutation = api.rankings.updatePoints.useMutation({
-        onSuccess: () => {
-        },
-    })
-    const updateAllPoints = (data: Participant[]) => {
-        updatePointsMethod(1, data)
-        updatePointsMethod(2, data)
-        updatePointsMethod(3, data)
-        updatePointsMethod(4, data)
-    }
-    const updatePointsMethod = (id: number, data: Participant[]) => {
-        pointsMutation.mutate({
-        id: id,
-        points: getTotalPoints((gradeIdConvertor[id] || 0), id, data)
-      });
-    }
-    const getTotalPoints = (grade: number, id: number, data: Participant[]) => {
-        let totalPoints: (number)[] = [];
-        let totalNum: (number)[] = [];
-        let eventIds: (number)[] = [];
-        data.forEach((participant) => {
-        if (participant.eventInformationId != null && participant.grade === grade) {
-            if (eventIds.indexOf(participant.eventInformationId) != -1) {
-                let validIndex = eventIds.indexOf(participant.eventInformationId)
-                totalNum[validIndex] += 1
-                if (participant.dressed) {
-                    totalPoints[validIndex] += 1
-                }
-            } else {
-                eventIds.push(participant.eventInformationId)
-                let validIndex = eventIds.indexOf(participant.eventInformationId)
-                totalNum.push(1)
-                totalPoints.push(0)
-                if (participant.dressed) {
-                    totalPoints[validIndex] += 1
-                }
-            }
-        }
-        }
-        )
-        let total = 0
-        eventIds.forEach((eventId, index) => {
-            total = total + Math.round(((100*(totalPoints[index] || 0))/(totalNum[index] || 1)))
-        })
-        return total;
-    }
+const Leaderboard: React.FC<Props> = ({}) => {
+  const gradeIdConvertor = [0, 10, 11, 12, 9];
+  const pointsMutation = api.rankings.updatePoints.useMutation({
+    onSuccess: () => {},
+  });
+  const updateAllPoints = (data: Participant[]) => {
+    updatePointsMethod(1, data);
+    updatePointsMethod(2, data);
+    updatePointsMethod(3, data);
+    updatePointsMethod(4, data);
+  };
+  const updatePointsMethod = (id: number, data: Participant[]) => {
+    pointsMutation.mutate({
+      id: id,
+      points: getTotalPoints(gradeIdConvertor[id] || 0, id, data),
+    });
+  };
+  const getTotalPoints = (grade: number, id: number, data: Participant[]) => {
+    let totalPoints: number[] = [];
+    let totalNum: number[] = [];
 
-    const { data: rankingsData } = api.rankings.getAll.useQuery();
-    const { data: participantData } = api.participant.getAll.useQuery();
-    useMemo(() => { participantData ? updateAllPoints(participantData) : null
-    }, [participantData])
-    if (!rankingsData || !participantData) return null;
-    
-    
+    const eventsIds = data
+      .map((e) => e.eventInformationId)
+      .filter((e) => e != null)
+      .filter((item, pos, arr) => arr.indexOf(item) === pos);
 
-    return (
-        <div className="flex w-full content-center justify-center">
-            <div className="flex w-9/12 flex-col content-center justify-start space-y-2">
-                {rankingsData.map((rank, index) => (
-                    <Rank rank={index + 1} grade={{grade: rank.grade, points: rank.points}} key={rank.id}></Rank>
-                ))}
-            </div>
-        </div>
+    const events: { points: number; num: number; id: number }[] = eventsIds.map(
+      (id) => ({
+        id: id ?? 0,
+        num: data.filter(
+          (p) => p.eventInformationId === id && p.grade === grade
+        ).length,
+        points: data.filter(
+          (p) => p.eventInformationId === id && p.dressed && p.grade === grade
+        ).length,
+      })
     );
+
+    const total = events.reduce(
+      (prev, event) =>
+        prev +
+        Math.round((100 * event.points) / (event.num === 0 ? 1 : event.num)),
+      0
+    );
+
+    return total;
+  };
+
+  const { data: rankingsData, refetch: refetchRank } =
+    api.rankings.getAll.useQuery();
+  const { data: participantData, refetch: refetchParticipant } =
+    api.participant.getAll.useQuery();
+  useMemo(() => {
+    participantData ? updateAllPoints(participantData) : null;
+  }, [participantData]);
+  refetchRank();
+  refetchParticipant();
+  if (!rankingsData || !participantData) return null;
+
+  return (
+    <div className="flex w-full content-center justify-center">
+      <div className="flex w-9/12 flex-col content-center justify-start space-y-2">
+        {rankingsData.map((rank, index) => (
+          <Rank
+            rank={index + 1}
+            grade={{ grade: rank.grade, points: rank.points }}
+            key={rank.id}
+          ></Rank>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default Leaderboard;
