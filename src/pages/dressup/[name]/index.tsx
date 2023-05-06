@@ -9,9 +9,7 @@ const Tracker: React.FC = ({}) => {
   const name = router.query.name as string;
   const [updated, setUpdated] = useState(true);
   const seenMutation = api.participant.updateSeen.useMutation({
-    onSuccess: () => {
-      setUpdated(true);
-    },
+    onSuccess: () => {},
   });
   const dressMutation = api.participant.updateParticipated.useMutation({
     onSuccess: () => {
@@ -20,18 +18,22 @@ const Tracker: React.FC = ({}) => {
   });
   const checkChange = async (seen: boolean, id: number) => {
     setUpdated(false);
-    return seenMutation.mutate({
+    await seenMutation.mutate({
       id: id,
       seen: seen,
     });
+    await refetch();
+    setUpdated(true);
   };
 
   const checkChangev2 = async (dress: boolean, id: number) => {
     setUpdated(false);
-    return dressMutation.mutate({
+    await dressMutation.mutate({
       id: id,
       dressed: dress,
     });
+    await refetch();
+    setUpdated(true);
   };
 
   const [form, setForm] = useState("ALL");
@@ -40,7 +42,8 @@ const Tracker: React.FC = ({}) => {
   const filterParticipants = (gradeLevel: string) => {
     setForm(gradeLevel);
   };
-  const { data, refetch } = api.eventInformation.getAllDressUp.useQuery();
+  const { data, refetch, isLoading } =
+    api.eventInformation.getAllDressUp.useQuery();
   useMemo(() => {
     refetch();
   }, [updated]);
@@ -122,19 +125,15 @@ const Tracker: React.FC = ({}) => {
                           className="flex justify-center"
                           key={participant.id + "seen"}
                         >
-                          {updated ? (
-                            <button
-                              className="flex cursor-pointer justify-center hover:shadow-black hover:drop-shadow-lg"
-                              onClick={() =>
+                          {updated && !isLoading ? (
+                            <input
+                              type="checkbox"
+                              className="h-7 w-7 cursor-pointer rounded-xl"
+                              defaultChecked={participant.seen}
+                              onChange={() =>
                                 checkChange(!participant.seen, participant.id)
                               }
-                            >
-                              <input
-                                type="checkbox"
-                                className="h-7 w-7 cursor-pointer rounded-xl"
-                                defaultChecked={participant.seen}
-                              ></input>
-                            </button>
+                            ></input>
                           ) : (
                             <input
                               type="checkbox"
@@ -150,22 +149,18 @@ const Tracker: React.FC = ({}) => {
                           className="flex justify-center"
                           key={participant.id + "dressed"}
                         >
-                          {updated ? (
-                            <button
-                              className="flex cursor-pointer justify-center hover:shadow-black hover:drop-shadow-lg"
-                              onClick={() =>
+                          {updated && !isLoading ? (
+                            <input
+                              type="checkbox"
+                              className="h-7 w-7 cursor-pointer rounded-xl"
+                              defaultChecked={participant.dressed}
+                              onChange={() =>
                                 checkChangev2(
                                   !participant.dressed,
                                   participant.id
                                 )
                               }
-                            >
-                              <input
-                                type="checkbox"
-                                className="h-7 w-7 cursor-pointer rounded-xl"
-                                defaultChecked={participant.dressed}
-                              ></input>
-                            </button>
+                            ></input>
                           ) : (
                             <input
                               type="checkbox"
