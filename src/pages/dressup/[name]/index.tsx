@@ -7,13 +7,19 @@ import { useState } from "react";
 const Tracker: React.FC = ({}) => {
   const router = useRouter();
   const name = router.query.name as string;
+  const [updated, setUpdated] = useState(true);
   const seenMutation = api.participant.updateSeen.useMutation({
-    onSuccess: () => {},
+    onSuccess: () => {
+      setUpdated(true);
+    },
   });
   const dressMutation = api.participant.updateParticipated.useMutation({
-    onSuccess: () => {},
+    onSuccess: () => {
+      setUpdated(true);
+    },
   });
   const checkChange = async (seen: boolean, id: number) => {
+    setUpdated(false);
     return seenMutation.mutate({
       id: id,
       seen: seen,
@@ -21,6 +27,7 @@ const Tracker: React.FC = ({}) => {
   };
 
   const checkChangev2 = async (dress: boolean, id: number) => {
+    setUpdated(false);
     return dressMutation.mutate({
       id: id,
       dressed: dress,
@@ -100,7 +107,10 @@ const Tracker: React.FC = ({}) => {
                   participant.name
                     .toLowerCase()
                     .indexOf(search.toLowerCase()) != -1 ? (
-                    <div className="flex w-full grid-cols-3" key={index}>
+                    <div
+                      className="flex w-full grid-cols-3"
+                      key={participant.id}
+                    >
                       <div className="w-full border-2 border-r-2 border-white bg-blue-100 p-2">
                         <h1 className="text-center">{participant.name}</h1>
                       </div>
@@ -144,6 +154,17 @@ const Tracker: React.FC = ({}) => {
                 )}
             </div>
           </div>
+        </div>
+        <div className="flex w-full justify-end">
+          {updated ? (
+            <div className="heading-sub w-32 rounded-lg bg-green-600 p-2 text-slate-100">
+              Updated
+            </div>
+          ) : (
+            <div className="heading-sub w-32 rounded-lg bg-rose-600 p-2 text-slate-100">
+              Loading...
+            </div>
+          )}
         </div>
       </div>
     </div>
