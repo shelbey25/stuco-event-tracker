@@ -70,7 +70,14 @@ const Leaderboard: React.FC<Props> = ({}) => {
   }, [participantData]);
   refetchRank();
   refetchParticipant();
-  if (!rankingsData || !participantData) return null;
+  if (!rankingsData || !participantData)
+    return (
+      <div className="flex w-full content-center justify-center">
+        <div className="heading-sub flex h-16 w-9/12 justify-center rounded-lg bg-rose-600 p-2 text-center align-middle text-slate-100">
+          Loading...
+        </div>
+      </div>
+    );
 
   return (
     <div className="flex w-full content-center justify-center">

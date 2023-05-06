@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { api } from "~/utils/api";
-import { useState } from "react";
-
+import { useMemo, useState } from "react";
+//Why is update delayed
 const Tracker: React.FC = ({}) => {
   const router = useRouter();
   const name = router.query.name as string;
@@ -40,7 +40,10 @@ const Tracker: React.FC = ({}) => {
   const filterParticipants = (gradeLevel: string) => {
     setForm(gradeLevel);
   };
-  const { data } = api.eventInformation.getAllDressUp.useQuery();
+  const { data, refetch } = api.eventInformation.getAllDressUp.useQuery();
+  useMemo(() => {
+    refetch();
+  }, [updated]);
   if (!data) return null;
   const singleEvent = data.find((item) => item.name === name);
   if (!singleEvent)
@@ -115,38 +118,62 @@ const Tracker: React.FC = ({}) => {
                         <h1 className="text-center">{participant.name}</h1>
                       </div>
                       <div className="w-full items-center justify-center border-2 border-b-2 border-r-2 border-white bg-blue-100 p-2">
-                        <div className="flex justify-center">
-                          <button
-                            className="flex cursor-pointer justify-center hover:shadow-black hover:drop-shadow-lg"
-                            onClick={() =>
-                              checkChange(!participant.seen, participant.id)
-                            }
-                          >
+                        <div
+                          className="flex justify-center"
+                          key={participant.id + "seen"}
+                        >
+                          {updated ? (
+                            <button
+                              className="flex cursor-pointer justify-center hover:shadow-black hover:drop-shadow-lg"
+                              onClick={() =>
+                                checkChange(!participant.seen, participant.id)
+                              }
+                            >
+                              <input
+                                type="checkbox"
+                                className="h-7 w-7 cursor-pointer rounded-xl"
+                                defaultChecked={participant.seen}
+                              ></input>
+                            </button>
+                          ) : (
                             <input
                               type="checkbox"
                               className="h-7 w-7 cursor-pointer rounded-xl"
                               defaultChecked={participant.seen}
+                              disabled
                             ></input>
-                          </button>
+                          )}
                         </div>
                       </div>
                       <div className="w-full justify-center border-2 border-l-2 border-white bg-blue-100 p-2">
-                        <div className="flex justify-center">
-                          <button
-                            className="flex cursor-pointer justify-center hover:shadow-black hover:drop-shadow-lg"
-                            onClick={() =>
-                              checkChangev2(
-                                !participant.dressed,
-                                participant.id
-                              )
-                            }
-                          >
+                        <div
+                          className="flex justify-center"
+                          key={participant.id + "dressed"}
+                        >
+                          {updated ? (
+                            <button
+                              className="flex cursor-pointer justify-center hover:shadow-black hover:drop-shadow-lg"
+                              onClick={() =>
+                                checkChangev2(
+                                  !participant.dressed,
+                                  participant.id
+                                )
+                              }
+                            >
+                              <input
+                                type="checkbox"
+                                className="h-7 w-7 cursor-pointer rounded-xl"
+                                defaultChecked={participant.dressed}
+                              ></input>
+                            </button>
+                          ) : (
                             <input
                               type="checkbox"
                               className="h-7 w-7 cursor-pointer rounded-xl"
                               defaultChecked={participant.dressed}
+                              disabled
                             ></input>
-                          </button>
+                          )}
                         </div>
                       </div>
                     </div>
